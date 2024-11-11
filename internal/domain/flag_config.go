@@ -10,13 +10,14 @@ var (
 )
 
 type FlagConfig struct {
-	Path   string
-	From   time.Time
-	To     time.Time
-	Format string
-	Filter string
+	Path        string
+	From        time.Time
+	To          time.Time
+	Format      string
+	FilterField string
+	FilterValue string
 }
 
-func NewFlagConfig(path string, from, to time.Time, format, filter string) *FlagConfig {
-	return &FlagConfig{path, from, to, format, filter}
+func NewFlagConfig(path string, from, to time.Time, format, filterField, filterValue string) *FlagConfig {
+	return &FlagConfig{path, from, to, format, filterField, filterValue}
 }

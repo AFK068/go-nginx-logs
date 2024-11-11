@@ -9,11 +9,12 @@ import (
 )
 
 var (
-	path   = flag.String("path", "", "Path to the file or URL (local path or URL)")
-	from   = flag.String("from", "", "Start date in the format YYYY-MM-DDTHH:MM:SSZ (ISO8601)")
-	to     = flag.String("to", "", "End date in the format YYYY-MM-DDTHH:MM:SSZ (ISO8601)")
-	format = flag.String("format", "", "Output format, markdown or adoc")
-	filter = flag.String("filter-value", "", "Filter parameter value")
+	path        = flag.String("path", "", "Path to the file or URL (local path or URL)")
+	from        = flag.String("from", "", "Start date in the format YYYY-MM-DDTHH:MM:SSZ (ISO8601)")
+	to          = flag.String("to", "", "End date in the format YYYY-MM-DDTHH:MM:SSZ (ISO8601)")
+	format      = flag.String("format", "", "Output format, markdown or adoc")
+	filterField = flag.String("filter-field", "", "Filter parameter field")
+	filterValue = flag.String("filter-value", "", "Filter parameter value")
 )
 
 func ParseFlagToFlagConfigObject() (*domain.FlagConfig, error) {
@@ -43,12 +44,17 @@ func ParseFlagToFlagConfigObject() (*domain.FlagConfig, error) {
 		parsedFormat = domain.MarkdownFormat // Default format
 	}
 
-	parsedFilter := *filter
-	if isFlagEmpty(parsedFilter) {
-		parsedFilter = ""
+	parsedFilterField := *filterField
+	if isFlagEmpty(parsedFilterField) {
+		parsedFilterField = ""
 	}
 
-	return domain.NewFlagConfig(parsedPath, parsedFrom, parsedTo, parsedFormat, parsedFilter), nil
+	parsedFilterValue := *filterValue
+	if isFlagEmpty(parsedFilterValue) {
+		parsedFilterValue = ""
+	}
+
+	return domain.NewFlagConfig(parsedPath, parsedFrom, parsedTo, parsedFormat, parsedFilterField, parsedFilterValue), nil
 }
 
 func isFlagEmpty(flagValue string) bool {
