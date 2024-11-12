@@ -4,5 +4,5 @@ filename: "{{.InterfaceName | snakecase}}.go"
 mockname: "{{.InterfaceName | firstUpper}}"
 outpkg: mocks
 packages:
-  github.com/es-debug/backend-academy-2024-go-template/pkg/lineparser:
+  github.com/es-debug/backend-academy-2024-go-template/pkg/datastream:
     all: true
