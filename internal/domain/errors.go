@@ -25,3 +25,11 @@ type ParseNGINXStringError struct {
 func (e *ParseNGINXStringError) Error() string {
 	return fmt.Sprintf("Parse NGINX string error: %s", e.Message)
 }
+
+type InvalidDateRangeError struct {
+	Message string
+}
+
+func (e *InvalidDateRangeError) Error() string {
+	return fmt.Sprintf("Invalid date range: %s", e.Message)
+}
