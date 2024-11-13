@@ -25,7 +25,7 @@ func TestProcessFromFile(t *testing.T) {
 	mockParser.On("Parse", "line2").Return(&TestStruct{Field1: "value2", Field2: 2}, nil).Once()
 	mockParser.On("Parse", "line3").Return(&TestStruct{Field1: "value3", Field2: 3}, nil).Once()
 
-	mockUpdater.On("Update", mock.AnythingOfType("*datastream_test.TestStruct")).Return(nil).Times(3)
+	mockUpdater.On("Update", mock.AnythingOfType("*datastream_test.TestStruct")).Times(3)
 
 	file, err := os.CreateTemp("", "testfile")
 	assert.NoError(t, err)
@@ -51,7 +51,7 @@ func TestProcessFromURL(t *testing.T) {
 	mockParser.On("Parse", "line2").Return(&TestStruct{Field1: "value2", Field2: 2}, nil).Once()
 	mockParser.On("Parse", "line3").Return(&TestStruct{Field1: "value3", Field2: 3}, nil).Once()
 
-	mockUpdater.On("Update", mock.AnythingOfType("*datastream_test.TestStruct")).Return(nil).Times(3)
+	mockUpdater.On("Update", mock.AnythingOfType("*datastream_test.TestStruct")).Times(3)
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		_, err := w.Write([]byte("line1\nline2\nline3\n"))

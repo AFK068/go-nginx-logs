@@ -18,21 +18,8 @@ func (_m *Updater[T]) EXPECT() *Updater_Expecter[T] {
 }
 
 // Update provides a mock function with given fields: data
-func (_m *Updater[T]) Update(data *T) error {
-	ret := _m.Called(data)
-
-	if len(ret) == 0 {
-		panic("no return value specified for Update")
-	}
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(*T) error); ok {
-		r0 = rf(data)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
+func (_m *Updater[T]) Update(data *T) {
+	_m.Called(data)
 }
 
 // Updater_Update_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Update'
@@ -53,12 +40,12 @@ func (_c *Updater_Update_Call[T]) Run(run func(data *T)) *Updater_Update_Call[T]
 	return _c
 }
 
-func (_c *Updater_Update_Call[T]) Return(_a0 error) *Updater_Update_Call[T] {
-	_c.Call.Return(_a0)
+func (_c *Updater_Update_Call[T]) Return() *Updater_Update_Call[T] {
+	_c.Call.Return()
 	return _c
 }
 
-func (_c *Updater_Update_Call[T]) RunAndReturn(run func(*T) error) *Updater_Update_Call[T] {
+func (_c *Updater_Update_Call[T]) RunAndReturn(run func(*T)) *Updater_Update_Call[T] {
 	_c.Call.Return(run)
 	return _c
 }
