@@ -11,7 +11,7 @@ type Parser[T any] interface {
 }
 
 type Updater[T any] interface {
-	Update(data *T) error
+	Update(data *T)
 }
 
 func ProcessFromFile[T any](paths []string, parser Parser[T], updater Updater[T]) error {
@@ -32,10 +32,7 @@ func ProcessFromFile[T any](paths []string, parser Parser[T], updater Updater[T]
 					continue
 				}
 
-				err = updater.Update(parsedData)
-				if err != nil {
-					return err
-				}
+				updater.Update(parsedData)
 			}
 
 			if err := scanner.Err(); err != nil {
@@ -75,10 +72,7 @@ func ProcessFromURL[T any](url string, parser Parser[T], updater Updater[T]) err
 			continue
 		}
 
-		err = updater.Update(parsedData)
-		if err != nil {
-			return nil
-		}
+		updater.Update(parsedData)
 	}
 
 	if err := scanner.Err(); err != nil {
