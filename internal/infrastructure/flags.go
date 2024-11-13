@@ -35,6 +35,10 @@ func ParseFlagToFlagConfigObject() (*domain.FlagConfig, error) {
 		fmt.Println("To flag has invalid format and will not be considered.")
 	}
 
+	if parsedTo.Before(parsedFrom) {
+		return nil, &domain.InvalidDateRangeError{Message: "end date is before start date"}
+	}
+
 	parsedFormat := *format
 	if isFlagEmpty(parsedFormat) {
 		parsedFormat = domain.MarkdownFormat // Default format
@@ -66,5 +70,5 @@ func parseDate(dateStr string) (time.Time, error) {
 		return time.Time{}, nil
 	}
 
-	return time.Parse("2006-01-02", dateStr)
+	return time.Parse(time.RFC3339, dateStr)
 }
