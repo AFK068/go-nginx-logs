@@ -2,7 +2,10 @@ module github.com/es-debug/backend-academy-2024-go-template
 
 go 1.22.6
 
-require github.com/stretchr/testify v1.9.0
+require (
+	github.com/streadway/quantile v0.0.0-20220407130108-4246515d968d
+	github.com/stretchr/testify v1.9.0
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
