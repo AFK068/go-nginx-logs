@@ -23,19 +23,25 @@ func TestGetPath_success(t *testing.T) {
 	tests := []struct {
 		name        string
 		input       string
-		expected    []string
+		expected    *pathutils.PathResult
 		expectError bool
 	}{
 		{
-			name:        "Valid URL",
-			input:       "https://example.com",
-			expected:    []string{"https://example.com"},
+			name:  "Valid URL",
+			input: "https://example.com",
+			expected: &pathutils.PathResult{
+				Paths: []string{"https://example.com"},
+				Type:  "url",
+			},
 			expectError: false,
 		},
 		{
-			name:        "Valid local path",
-			input:       filepath.Join(tempDir, "file*"),
-			expected:    []string{tempFile1.Name(), tempFile2.Name()},
+			name:  "Valid local path",
+			input: filepath.Join(tempDir, "file*"),
+			expected: &pathutils.PathResult{
+				Paths: []string{tempFile1.Name(), tempFile2.Name()},
+				Type:  "file",
+			},
 			expectError: false,
 		},
 	}
@@ -45,9 +51,10 @@ func TestGetPath_success(t *testing.T) {
 			result, err := pathutils.GetPath(tt.input)
 			if tt.expectError {
 				assert.Error(t, err)
+				assert.IsType(t, &pathutils.PathError{}, err)
 			} else {
 				assert.NoError(t, err)
-				assert.ElementsMatch(t, tt.expected, result)
+				assert.Equal(t, tt.expected, result)
 			}
 		})
 	}
@@ -61,25 +68,34 @@ func TestGetPath_failure(t *testing.T) {
 	tests := []struct {
 		name        string
 		input       string
-		expected    []string
+		expected    *pathutils.PathResult
 		expectError bool
 	}{
 		{
-			name:        "Invalid URL",
-			input:       "htp//invalid-url",
-			expected:    nil,
+			name:  "Invalid URL",
+			input: "htp://invalid-url",
+			expected: &pathutils.PathResult{
+				Paths: nil,
+				Type:  "",
+			},
 			expectError: true,
 		},
 		{
-			name:        "Non-existent local path",
-			input:       filepath.Join(tempDir, "nonexistent"),
-			expected:    nil,
+			name:  "Non-existent local path",
+			input: filepath.Join(tempDir, "nonexistent"),
+			expected: &pathutils.PathResult{
+				Paths: nil,
+				Type:  "",
+			},
 			expectError: true,
 		},
 		{
-			name:        "Directory path",
-			input:       tempDir,
-			expected:    nil,
+			name:  "Directory path",
+			input: tempDir,
+			expected: &pathutils.PathResult{
+				Paths: nil,
+				Type:  "",
+			},
 			expectError: true,
 		},
 	}
@@ -89,9 +105,10 @@ func TestGetPath_failure(t *testing.T) {
 			result, err := pathutils.GetPath(tt.input)
 			if tt.expectError {
 				assert.Error(t, err)
+				assert.IsType(t, &pathutils.PathError{}, err)
 			} else {
 				assert.NoError(t, err)
-				assert.ElementsMatch(t, tt.expected, result)
+				assert.Equal(t, tt.expected, result)
 			}
 		})
 	}

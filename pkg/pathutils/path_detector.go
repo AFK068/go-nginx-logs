@@ -7,15 +7,38 @@ import (
 	urlverifier "github.com/davidmytton/url-verifier"
 )
 
-// Determines the URL of a string or a local path and gets the corresponding results.
-func GetPath(path string) ([]string, error) {
-	// Check for local path.
+// PathResult contains the results and type of the path.
+type PathResult struct {
+	Paths []string
+	Type  string
+}
+
+// GetPath determines whether the string is a URL or a local path and returns the corresponding results and path type.
+func GetPath(path string) (*PathResult, error) {
+	pathFiles, err := getFile(path)
+	if err != nil {
+		return nil, &PathError{Message: err.Error()}
+	}
+
+	if len(pathFiles) > 0 {
+		return &PathResult{Paths: pathFiles, Type: "file"}, nil
+	}
+
+	pathURL, err := getURL(path)
+	if err != nil {
+		return nil, &PathError{Message: err.Error()}
+	}
+
+	return &PathResult{Paths: pathURL, Type: "url"}, nil
+}
+
+// getFile checks if the string is a local path and returns the corresponding results.
+func getFile(path string) ([]string, error) {
 	files, err := filepath.Glob(path)
 	if err != nil {
 		return nil, err
 	}
 
-	// Filtering directories.
 	var validFiles []string
 
 	for _, file := range files {
@@ -29,11 +52,12 @@ func GetPath(path string) ([]string, error) {
 		}
 	}
 
-	if len(validFiles) != 0 {
-		return validFiles, nil
-	}
+	return validFiles, nil
+}
 
-	_, err = urlverifier.NewVerifier().CheckHTTP(path)
+// getURL checks if the string is a URL and returns the corresponding results.
+func getURL(path string) ([]string, error) {
+	_, err := urlverifier.NewVerifier().CheckHTTP(path)
 	if err != nil {
 		return nil, err
 	}
