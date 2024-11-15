@@ -35,7 +35,7 @@ func ParseFlagToFlagConfigObject() (*domain.FlagConfig, error) {
 		fmt.Println("To flag has invalid format and will not be considered.")
 	}
 
-	if parsedTo.Before(parsedFrom) {
+	if parsedTo.Before(parsedFrom) && !parsedTo.IsZero() && !parsedFrom.IsZero() {
 		return nil, &domain.InvalidDateRangeError{Message: "end date is before start date"}
 	}
 
