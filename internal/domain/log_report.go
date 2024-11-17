@@ -39,21 +39,49 @@ func (lr *LogReport) Update(log *NGINX) {
 	}
 
 	// Added 1 to the number of requests.
-	lr.NumberRequests++
+	lr.incrementRequestCount()
 
 	// Added the size of the response to the total size of the responses.
-	lr.TotalResponseSize += log.BodyBytesSent
+	lr.addResponseSize(log.BodyBytesSent)
 
 	// Updated the maximum and minimum sizes of the response.
-	lr.MaxResponseSize = max(lr.MaxResponseSize, log.BodyBytesSent)
-	lr.MinResponseSize = min(lr.MinResponseSize, log.BodyBytesSent)
+	lr.updateMaxResponseSizeStats(log.BodyBytesSent)
+	lr.updateMinResponseSizeStats(log.BodyBytesSent)
 
 	// Updated the number of requests for the resource and the status.
-	lr.ResourceCount[log.Request]++
-	lr.StatusCount[log.Status]++
+	lr.incrementResourceCount(log.Request)
+	lr.incrementStatusCount(log.Status)
 
 	// Added the size of the response to the quantile estimator.
-	lr.QuantileEstimator.Add(float64(log.BodyBytesSent))
+	lr.addToQuantileEstimator(log.BodyBytesSent)
+}
+
+func (lr *LogReport) incrementRequestCount() {
+	lr.NumberRequests++
+}
+
+func (lr *LogReport) addResponseSize(bodyBytesSent int) {
+	lr.TotalResponseSize += bodyBytesSent
+}
+
+func (lr *LogReport) updateMaxResponseSizeStats(bodyBytesSent int) {
+	lr.MaxResponseSize = max(lr.MaxResponseSize, bodyBytesSent)
+}
+
+func (lr *LogReport) updateMinResponseSizeStats(bodyBytesSent int) {
+	lr.MinResponseSize = min(lr.MinResponseSize, bodyBytesSent)
+}
+
+func (lr *LogReport) incrementResourceCount(request string) {
+	lr.ResourceCount[request]++
+}
+
+func (lr *LogReport) incrementStatusCount(status int) {
+	lr.StatusCount[status]++
+}
+
+func (lr *LogReport) addToQuantileEstimator(bodyBytesSent int) {
+	lr.QuantileEstimator.Add(float64(bodyBytesSent))
 }
 
 func (lr *LogReport) AverageResponseSize() float64 {
