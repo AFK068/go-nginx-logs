@@ -14,14 +14,18 @@ type DataProcessor interface {
 type URLDataProcessor struct{}
 
 func (p *URLDataProcessor) Process(paths *pathutils.PathResult, logReport *domain.LogReport) error {
-	return datastream.ProcessFromURL(paths.Paths[0], &domain.NGINXParser{}, logReport)
+	err := datastream.ProcessFromURL(paths.Paths[0], &domain.NGINXParser{}, logReport)
+
+	return err
 }
 
 // File process.
 type FileDataProcessor struct{}
 
 func (p *FileDataProcessor) Process(paths *pathutils.PathResult, logReport *domain.LogReport) error {
-	return datastream.ProcessFromFile(paths.Paths, &domain.NGINXParser{}, logReport)
+	err := datastream.ProcessFromFile(paths.Paths, &domain.NGINXParser{}, logReport)
+
+	return err
 }
 
 func GetDataProcessor(paths *pathutils.PathResult) (DataProcessor, error) {
