@@ -34,6 +34,10 @@ func MarkdownOutput(logReport *domain.LogReport) {
 		filterValue = logReport.FilterConfig.FilterValue
 	}
 
+	if logReport.MinResponseSize == int(^uint(0)>>1) && logReport.NumberRequests == 0 {
+		logReport.MinResponseSize = 0
+	}
+
 	md.H1("General information").Table(markdown.TableSet{
 		Header: []string{"Metrics", "Value"},
 		Rows: [][]string{
