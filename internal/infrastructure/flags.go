@@ -8,16 +8,16 @@ import (
 	"github.com/es-debug/backend-academy-2024-go-template/internal/domain"
 )
 
-var (
-	path        = flag.String("path", "", "Path to the file or URL (local path or URL)")
-	from        = flag.String("from", "", "Start date in the format YYYY-MM-DDTHH:MM:SSZ (ISO8601)")
-	to          = flag.String("to", "", "End date in the format YYYY-MM-DDTHH:MM:SSZ (ISO8601)")
-	format      = flag.String("format", "", "Output format, markdown or adoc")
-	filterField = flag.String("filter-field", "", "Filter parameter field")
-	filterValue = flag.String("filter-value", "", "Filter parameter value")
-)
-
 func ParseFlagToFlagConfigObject() (*domain.FlagConfig, error) {
+	var (
+		path        = flag.String("path", "", "Path to the file or URL (local path or URL)")
+		from        = flag.String("from", "", "Start date in the format YYYY-MM-DDTHH:MM:SSZ (ISO8601)")
+		to          = flag.String("to", "", "End date in the format YYYY-MM-DDTHH:MM:SSZ (ISO8601)")
+		format      = flag.String("format", "", "Output format, markdown or adoc")
+		filterField = flag.String("filter-field", "", "Filter parameter field")
+		filterValue = flag.String("filter-value", "", "Filter parameter value")
+	)
+
 	flag.Parse()
 
 	parsedPath := *path
