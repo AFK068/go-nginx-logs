@@ -1,6 +1,8 @@
 package application
 
 import (
+	"log/slog"
+
 	"github.com/es-debug/backend-academy-2024-go-template/internal/domain"
 	"github.com/es-debug/backend-academy-2024-go-template/pkg/datastream"
 	"github.com/es-debug/backend-academy-2024-go-template/pkg/pathutils"
@@ -15,6 +17,11 @@ type URLDataProcessor struct{}
 
 func (p *URLDataProcessor) Process(paths *pathutils.PathResult, logReport *domain.LogReport) error {
 	err := datastream.ProcessFromURL(paths.Paths[0], &domain.NGINXParser{}, logReport)
+	if err != nil {
+		slog.Error("failed to process data from URL", slog.String("error", err.Error()))
+	}
+
+	slog.Info("all data processed successfully")
 
 	return err
 }
@@ -24,6 +31,11 @@ type FileDataProcessor struct{}
 
 func (p *FileDataProcessor) Process(paths *pathutils.PathResult, logReport *domain.LogReport) error {
 	err := datastream.ProcessFromFile(paths.Paths, &domain.NGINXParser{}, logReport)
+	if err != nil {
+		slog.Error("failed to process data from file", slog.String("error", err.Error()))
+	}
+
+	slog.Info("all data processed successfully")
 
 	return err
 }
