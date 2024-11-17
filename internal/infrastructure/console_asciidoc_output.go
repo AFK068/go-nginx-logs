@@ -32,6 +32,10 @@ func AsciidocOutput(logReport *domain.LogReport) {
 		filterValue = logReport.FilterConfig.FilterValue
 	}
 
+	if logReport.MinResponseSize == int(^uint(0)>>1) && logReport.NumberRequests == 0 {
+		logReport.MinResponseSize = 0
+	}
+
 	sb.WriteString("= General information\n\n")
 	sb.WriteString("|===\n")
 	sb.WriteString("| Metrics | Value\n")
