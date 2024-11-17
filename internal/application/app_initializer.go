@@ -13,18 +13,18 @@ type AppComponents struct {
 	LogReport  domain.LogReport
 }
 
-func InitializeApp() (*AppComponents, error) {
-	config, err := InitializeConfig()
+func InitializeApp(initializer Inizializer) (*AppComponents, error) {
+	config, err := initializer.InitializeConfig()
 	if err != nil {
 		return nil, fmt.Errorf("initializing config: %w", err)
 	}
 
-	pathResult, err := InitializePath(config.Path)
+	pathResult, err := initializer.InitializePath(config.Path)
 	if err != nil {
 		return nil, fmt.Errorf("initializing path: %w", err)
 	}
 
-	logReport := InitializeLogReport(config)
+	logReport := initializer.InitializeLogReport(config)
 
 	return &AppComponents{
 		Config:     config,
