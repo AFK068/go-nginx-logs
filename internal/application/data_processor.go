@@ -19,6 +19,8 @@ func (p *URLDataProcessor) Process(paths *pathutils.PathResult, logReport *domai
 	err := datastream.ProcessFromURL(paths.Paths[0], &domain.NGINXParser{}, logReport)
 	if err != nil {
 		slog.Error("failed to process data from URL", slog.String("error", err.Error()))
+
+		return err
 	}
 
 	slog.Info("all data processed successfully")
@@ -33,6 +35,8 @@ func (p *FileDataProcessor) Process(paths *pathutils.PathResult, logReport *doma
 	err := datastream.ProcessFromFile(paths.Paths, &domain.NGINXParser{}, logReport)
 	if err != nil {
 		slog.Error("failed to process data from file", slog.String("error", err.Error()))
+
+		return err
 	}
 
 	slog.Info("all data processed successfully")
