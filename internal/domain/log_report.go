@@ -23,7 +23,7 @@ func NewLogReport(fc *FlagConfig) *LogReport {
 		MinResponseSize:   int(^uint(0) >> 1), // MaxInt
 		ResourceCount:     make(map[string]int),
 		StatusCount:       make(map[int]int),
-		QuantileEstimator: quantile.New(),
+		QuantileEstimator: quantile.New(quantile.Known(0.95, 0.001)),
 	}
 }
 
