@@ -1,6 +1,8 @@
 package application
 
 import (
+	"log/slog"
+
 	"github.com/es-debug/backend-academy-2024-go-template/internal/domain"
 	"github.com/es-debug/backend-academy-2024-go-template/internal/infrastructure"
 )
@@ -14,6 +16,8 @@ type MarkdownRenderer struct{}
 
 func (mr *MarkdownRenderer) Render(logReport *domain.LogReport) {
 	infrastructure.MarkdownOutput(logReport)
+
+	slog.Info("markdown output rendered")
 }
 
 // Asciidoc render.
@@ -21,6 +25,8 @@ type AsciidocRenderer struct{}
 
 func (ar *AsciidocRenderer) Render(logReport *domain.LogReport) {
 	infrastructure.AsciidocOutput(logReport)
+
+	slog.Info("asciidoc output rendered")
 }
 
 func GetOutputRenderer(outputFormat string) (OutputRenderer, error) {
