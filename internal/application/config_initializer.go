@@ -15,13 +15,25 @@ type Inizializer interface {
 type DefaultInizializer struct{}
 
 func (df *DefaultInizializer) InitializeConfig() (*domain.FlagConfig, error) {
-	return infrastructure.ParseFlagToFlagConfigObject()
+	config, err := infrastructure.ParseFlagToFlagConfigObject()
+	if err != nil {
+		return nil, err
+	}
+
+	return config, nil
 }
 
 func (df *DefaultInizializer) InitializeLogReport(config *domain.FlagConfig) domain.LogReport {
-	return *domain.NewLogReport(config)
+	logReport := *domain.NewLogReport(config)
+
+	return logReport
 }
 
 func (df *DefaultInizializer) InitializePath(paths string) (*pathutils.PathResult, error) {
-	return pathutils.GetPath(paths)
+	pathResult, err := pathutils.GetPath(paths)
+	if err != nil {
+		return nil, err
+	}
+
+	return pathResult, nil
 }
