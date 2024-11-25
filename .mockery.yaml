@@ -1,5 +1,10 @@
 with-expecter: true
+dir: "{{.InterfaceDir}}/mocks"
 filename: "{{.InterfaceName | snakecase}}.go"
 mockname: "{{.InterfaceName | firstUpper}}"
 outpkg: mocks
 packages:
+  github.com/es-debug/backend-academy-2024-go-template/pkg/datastream:
+    all: true
+  github.com/es-debug/backend-academy-2024-go-template/internal/application:
+    all: true
